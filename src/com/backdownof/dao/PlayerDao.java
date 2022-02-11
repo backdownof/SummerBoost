@@ -19,24 +19,24 @@ public class PlayerDao implements Dao<Integer, Player> {
             DELETE FROM player WHERE id = ?;
             """;
     private static final String SAVE_SQL = """
-            INSERT INTO player (username) VALUES (?);
+            INSERT INTO player (username, telegram_user_id, chat_id) VALUES (?, ?, ?);
             """;
     private static final String FIND_ALL_SQL = """
-            SELECT id, username FROM player
+            SELECT id, username, telegram_user_id, chat_id FROM player
             """;
     private static final String UPDATE_SQL = """
             UPDATE player
-            SET username = ?
+            SET username = ?, telegram_user_id = ?, chat_id = ?
             WHERE id = ?
             """;
     private static final String FIND_BY_ID = """
-            SELECT id, username
+            SELECT id, username, telegram_user_id, chat_id
             FROM player
             WHERE id = ?
             """;
 
     private static final String FIND_BY_USERNAME = """
-            SELECT id, username
+            SELECT id, username, telegram_user_id, chat_id
             FROM player
             WHERE username = ?
             """;
@@ -65,7 +65,9 @@ public class PlayerDao implements Dao<Integer, Player> {
 
             Player player = null;
             if (resultSet.next()) {
-                player = new Player(resultSet.getString("username"));
+                player = new Player(resultSet.getString("username"),
+                        resultSet.getLong("telegram_user_id"),
+                        resultSet.getLong("chat_id"));
             }
             return Optional.ofNullable(player);
         } catch (SQLException e) {
@@ -84,7 +86,9 @@ public class PlayerDao implements Dao<Integer, Player> {
             if (resultSet.next()) {
                 player = new Player(
                         resultSet.getInt("id"),
-                        resultSet.getString("username"));
+                        resultSet.getString("username"),
+                        resultSet.getLong("telegram_user_id"),
+                        resultSet.getLong("chat_id"));
             }
             return Optional.ofNullable(player);
         } catch (SQLException e) {
@@ -96,6 +100,8 @@ public class PlayerDao implements Dao<Integer, Player> {
         try (var connection = DBConnectionManager.get();
              var preparedStatement = connection.prepareStatement(SAVE_SQL, Statement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setString(1, player.getNickname());
+            preparedStatement.setLong(2, player.getTelegramUserId());
+            preparedStatement.setLong(3, player.getChatId());
             preparedStatement.executeUpdate();
 
             var generatedKeys = preparedStatement.getGeneratedKeys();
@@ -114,7 +120,8 @@ public class PlayerDao implements Dao<Integer, Player> {
         try (var connection = DBConnectionManager.get();
              var prepareStatement = connection.prepareStatement(UPDATE_SQL)) {
             prepareStatement.setString(1, player.getNickname());
-            prepareStatement.setInt(2, player.getId());
+            prepareStatement.setLong(2, player.getTelegramUserId());
+            prepareStatement.setLong(3, player.getChatId());
 
             prepareStatement.executeUpdate();
         } catch (SQLException e) {
@@ -180,7 +187,9 @@ public class PlayerDao implements Dao<Integer, Player> {
     private Player buildPlayer(ResultSet resultSet) throws SQLException {
         Player player = new Player(
                 resultSet.getInt("id"),
-                resultSet.getString("username")
+                resultSet.getString("username"),
+                resultSet.getLong("telegram_user_id"),
+                resultSet.getLong("chat_id")
         );
         return player;
     }

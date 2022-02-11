@@ -1,6 +1,7 @@
 package com.backdownof.telegram;
 
 import com.backdownof.dao.PlayerDao;
+import com.backdownof.util.DBQueryUtil;
 import com.backdownof.util.PlayerUtil;
 import com.backdownof.util.PropertiesUtil;
 import lombok.SneakyThrows;
@@ -35,11 +36,14 @@ public class TestBot extends TelegramLongPollingBot {
             handleMessage(update.getMessage());
             Message message = update.getMessage();
 
+            System.out.println(message);
+
             if (message.hasText() && message.isCommand() && message.getText().equals("/players")) {
                 String response = PlayerUtil.createPlayer(message);
                 StringBuilder sb = new StringBuilder();
                 sb.append(response);
                 sb.append(PlayerUtil.playersToString(PlayerDao.getInstance().findAll()));
+                System.out.println(message.getChatId());
 
                 execute(SendMessage.builder()
                         .chatId(message.getChatId().toString())
@@ -47,7 +51,6 @@ public class TestBot extends TelegramLongPollingBot {
                         .text(sb.toString())
                         .build());
 
-//                DBQueryUtil.dropPlayerTable();
             }
 
             if (message.hasText()) {
@@ -68,6 +71,21 @@ public class TestBot extends TelegramLongPollingBot {
                     message.getEntities().stream().filter(e -> "bot_command".equals(e.getType())).findFirst();
             
         }
+
+//        if (message.hasText() && message.isCommand() && message.getText().equals("/players")) {
+//            String response = PlayerUtil.createPlayer(message);
+//            StringBuilder sb = new StringBuilder();
+//            sb.append(response);
+//            sb.append(PlayerUtil.playersToString(PlayerDao.getInstance().findAll()));
+//            System.out.println(message.getChatId());
+//
+//            execute(SendMessage.builder()
+//                    .chatId(message.getChatId().toString())
+//                    .text(response)
+//                    .text(sb.toString())
+//                    .build());
+//
+//        }
     }
 
     @SneakyThrows

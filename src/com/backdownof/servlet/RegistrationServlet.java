@@ -1,6 +1,5 @@
 package com.backdownof.servlet;
 
-import com.backdownof.service.PlayerService;
 import com.backdownof.util.JspHelper;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -9,17 +8,17 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.nio.charset.StandardCharsets;
 
-@WebServlet("/players")
-public class PlayerServlet extends HttpServlet {
-    private final PlayerService playerService = PlayerService.getInstance();
+@WebServlet("/registration")
+public class RegistrationServlet extends HttpServlet {
+    @Override
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        var name = req.getParameter("name");
+
+    }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setAttribute("players", playerService.findAll());
-
-        req.getRequestDispatcher(JspHelper.getPath("players")).forward(req, resp);
+        req.getRequestDispatcher(JspHelper.getPath("registration")).forward(req, resp);
     }
 }

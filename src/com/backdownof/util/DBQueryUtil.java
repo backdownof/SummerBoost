@@ -10,11 +10,12 @@ public final class DBQueryUtil {
         createPlayerTable();
     }
 
-    private static void createPlayerTable() {
+    public static void createPlayerTable() {
         String sql = """
                     CREATE TABLE IF NOT EXISTS player (
                         id SERIAL PRIMARY KEY ,
-                        username VARCHAR(128) UNIQUE NOT NULL
+                        username VARCHAR(128) UNIQUE NOT NULL,
+                        chat_id BIGINT UNIQUE NOT NULL
                     );
                 """;
 

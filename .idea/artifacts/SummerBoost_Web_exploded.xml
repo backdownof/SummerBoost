@@ -11,9 +11,12 @@
           <element id="file-copy" path="$PROJECT_DIR$/lib/lombok.jar" />
           <element id="file-copy" path="$PROJECT_DIR$/lib/servlet-api.jar" />
           <element id="file-copy" path="$PROJECT_DIR$/lib/postgresql-42.3.2.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/lib/jakarta.servlet.jsp.jstl-2.0.0.jar" />
+          <element id="file-copy" path="$PROJECT_DIR$/lib/jakarta.servlet.jsp.jstl-api-2.0.0.jar" />
           <element id="file-copy" path="$PROJECT_DIR$/lib/telegrambots-5.7.1-jar-with-dependencies.jar" />
         </element>
       </element>
+      <element id="dir-copy" path="$PROJECT_DIR$/lib" />
     </root>
   </artifact>
 </component>

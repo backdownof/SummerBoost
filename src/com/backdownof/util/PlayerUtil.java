@@ -12,12 +12,13 @@ public final class PlayerUtil {
 
     public static String createPlayer(Message msg) {
         if (PlayerDao.getInstance().getByUsername(msg.getFrom().getUserName()).isEmpty()) {
-            Player player = new Player(msg.getFrom().getUserName());
+            Player player = new Player(msg.getFrom().getUserName(), msg.getFrom().getId(), msg.getChatId());
             PlayerDao.getInstance().save(player);
+//            System.out.println(msg.getFrom().ge);
 
             return "Player created";
         } else {
-            List<Player> players = PlayerDao.getInstance().findAll();
+//            List<Player> players = PlayerDao.getInstance().findAll();
             PlayerUtil.playersToString(PlayerDao.getInstance().findAll());
 
             return "Player exists";
